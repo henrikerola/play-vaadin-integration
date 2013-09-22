@@ -6,6 +6,7 @@ import play.api.mvc._
 import play.api.libs.iteratee.Enumerator
 import play.api.cache.Cache
 import play.api.Play.current
+import java.io.ByteArrayOutputStream
 
 object VaadinPlayRequestHandler {
 
@@ -47,7 +48,7 @@ class VaadinPlayRequestHandler(deploymentConfiguration: PlayDeploymentConfigurat
 
       SimpleResult(
         header = ResponseHeader(response.statusCode, response.headersMap.toMap),
-        body = Enumerator(response.outputStream.toString)).withSession(playSession)
+        body = Enumerator(response.outputStream.asInstanceOf[ByteArrayOutputStream].toByteArray)).withSession(playSession)
     }
   }
 

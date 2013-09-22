@@ -4,7 +4,7 @@ Run your [Vaadin](http://vaadin.com) applications inside the [Play!](http://www.
 
 ## Requirements
 
-* [Play](http://www.playframework.com/) 2.1
+* [Play](http://www.playframework.com/) 2.2
 * [Vaadin](http://vaadin.com) 7.1
 * ([Scaladin](https://github.com/henrikerola/scaladin) 3.0-SNAPSHOT)
 
@@ -12,36 +12,29 @@ Run your [Vaadin](http://vaadin.com) applications inside the [Play!](http://www.
 
 1. Use an existing Play! application or create a new by saying `play new PlayVaadinExample`.
 
-2. Add dependencies and specify `VAADIN` as an asset directory in `project/Build.scala`:
+2. Add dependencies and specify `VAADIN` as an asset directory in `build.sbt`:
 
-         import sbt._
-         import Keys._
-         import play.Project._
 
-         object ApplicationBuild extends Build {
+         name := "PlayVaadinExample"
 
-           val appName         = "PlayVaadinExample"
-           val appVersion      = "1.0-SNAPSHOT"
+         version := "1.0-SNAPSHOT"
 
-           val appDependencies = Seq(
-             "com.vaadin" % "vaadin-server" % "7.1.5",
-             "com.vaadin" % "vaadin-client-compiled" % "7.1.5",
-             "com.vaadin" % "vaadin-themes" % "7.1.5",
-             "org.vaadin.playintegration" %% "play-vaadin-integration" % "0.1-SNAPSHOT",
+         resolvers += "play-vaadin-integration Snapshots" at "http://henrikerola.github.io/repository/snapshots/"
 
-             // Add your project dependencies here,
-             javaCore,
-             javaJdbc,
-             javaEbean
-           )
+         libraryDependencies ++= Seq(
+           "com.vaadin" % "vaadin-server" % "7.1.6",
+           "com.vaadin" % "vaadin-client-compiled" % "7.1.6",
+           "com.vaadin" % "vaadin-themes" % "7.1.6",
+           "org.vaadin.playintegration" %% "play-vaadin-integration" % "0.1-SNAPSHOT",
 
-           val main = play.Project(appName, appVersion, appDependencies).settings(
-             resolvers += "play-vaadin-integration Snapshots" at "http://henrikerola.github.io/repository/snapshots/",
-             playAssetsDirectories <+= baseDirectory / "VAADIN"
-             // Add your own project settings here
-           )
+           jdbc,
+           anorm,
+           cache
+         )
 
-         }
+         play.Project.playScalaSettings
+
+         playAssetsDirectories <+= baseDirectory / "VAADIN"
 
 
 3. To hook up Vaadin to Play's request handling mechanism, create a `Global` object in the default package and let it extend `VaadinSupport` (`app/Global.scala`):
@@ -87,36 +80,29 @@ Scaladin is a wrapper library that provides a pure Scala API for Vaadin.
 
 1. Use an existing Play! application or create a new by saying `play new PlayScaladinExample`.
 
-2. Add dependencies and specify `VAADIN` as an asset directory in `project/Build.scala`:
+2. Add dependencies and specify `VAADIN` as an asset directory in `build.sbt`:
 
-         import sbt._
-         import Keys._
-         import play.Project._
+         name := "PlayScaladinExample"
 
-         object ApplicationBuild extends Build {
+         version := "1.0-SNAPSHOT"
 
-           val appName         = "PlayScaladinExample"
-           val appVersion      = "1.0-SNAPSHOT"
+         resolvers += "Scaladin & play-vaadin-integration Snapshots" at "http://henrikerola.github.io/repository/snapshots/",
 
-           val appDependencies = Seq(
-             "com.vaadin" % "vaadin-server" % "7.1.5",
-             "com.vaadin" % "vaadin-client-compiled" % "7.1.5",
-             "com.vaadin" % "vaadin-themes" % "7.1.5",
-             "vaadin.scala" %% "scaladin" % "3.0-SNAPSHOT",
-             "org.vaadin.playintegration" %% "play-vaadin-integration" % "0.1-SNAPSHOT",
+         libraryDependencies ++= Seq(
+           "com.vaadin" % "vaadin-server" % "7.1.6",
+           "com.vaadin" % "vaadin-client-compiled" % "7.1.6",
+           "com.vaadin" % "vaadin-themes" % "7.1.6",
+           "vaadin.scala" %% "scaladin" % "3.0-SNAPSHOT",
+           "org.vaadin.playintegration" %% "play-vaadin-integration" % "0.1-SNAPSHOT",
 
-             // Add your project dependencies here,
-             jdbc,
-             anorm
-           )
+           jdbc,
+           anorm,
+           cache
+         )
 
+         play.Project.playScalaSettings
 
-           val main = play.Project(appName, appVersion, appDependencies).settings(
-             resolvers += "Scaladin & play-vaadin-integration Snapshots" at "http://henrikerola.github.io/repository/snapshots/",
-             playAssetsDirectories <+= baseDirectory / "VAADIN"
-             // Add your own project settings here
-           )
-         }
+         playAssetsDirectories <+= baseDirectory / "VAADIN"
 
 
 3. To hook up Vaadin to Play's request handling mechanism, create a `Global` object in the default package and let it extend `VaadinSupport` (`app/Global.scala`):

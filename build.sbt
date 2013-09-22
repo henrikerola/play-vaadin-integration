@@ -12,7 +12,8 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "play" %% "play" % "2.1.4",
+  "com.typesafe.play" %% "play" % "2.2.0",
+  "com.typesafe.play" %% "play-cache" % "2.2.0",
   "com.vaadin" % "vaadin-server" % "7.1.5",
   "vaadin.scala" %% "scaladin" % "3.0-SNAPSHOT",
   "javax.servlet" % "servlet-api" % "2.4"
