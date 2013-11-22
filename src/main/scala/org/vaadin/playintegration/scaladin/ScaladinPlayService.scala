@@ -3,8 +3,7 @@ package org.vaadin.playintegration.scaladin
 import com.vaadin.server.VaadinRequest
 import org.vaadin.playintegration.VaadinPlayService
 import org.vaadin.playintegration.scaladin.mixins.ScaladinPlayServiceMixin
-import vaadin.scala.ScaladinService
-import vaadin.scala.server.ScaladinSession
+import vaadin.scala.server.{ ScaladinSession, ScaladinService }
 import vaadin.scala.mixins.ScaladinMixin
 import vaadin.scala.server.mixins.VaadinSessionMixin
 
