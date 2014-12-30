@@ -4,9 +4,9 @@ Run your [Vaadin](http://vaadin.com) applications inside the [Play!](http://www.
 
 ## Requirements
 
-* [Play](http://www.playframework.com/) 2.2
-* [Vaadin](http://vaadin.com) 7.1
-* ([Scaladin](https://github.com/henrikerola/scaladin) 3.0-SNAPSHOT)
+* [Play](http://www.playframework.com/) 2.3
+* [Vaadin](http://vaadin.com) 7.3
+* ([Scaladin](https://github.com/henrikerola/scaladin) 3.1)
 
 ## Running Vaadin applications inside Play!
 
@@ -22,9 +22,9 @@ Run your [Vaadin](http://vaadin.com) applications inside the [Play!](http://www.
          resolvers += "play-vaadin-integration Snapshots" at "http://henrikerola.github.io/repository/snapshots/"
 
          libraryDependencies ++= Seq(
-           "com.vaadin" % "vaadin-server" % "7.1.6",
-           "com.vaadin" % "vaadin-client-compiled" % "7.1.6",
-           "com.vaadin" % "vaadin-themes" % "7.1.6",
+           "com.vaadin" % "vaadin-server" % "7.3.7",
+           "com.vaadin" % "vaadin-client-compiled" % "7.3.7",
+           "com.vaadin" % "vaadin-themes" % "7.3.7",
            "org.vaadin.playintegration" %% "play-vaadin-integration" % "0.1-SNAPSHOT",
 
            jdbc,
@@ -32,9 +32,9 @@ Run your [Vaadin](http://vaadin.com) applications inside the [Play!](http://www.
            cache
          )
 
-         play.Project.playScalaSettings
+         lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-         playAssetsDirectories <+= baseDirectory / "VAADIN"
+         unmanagedResourceDirectories in Assets += baseDirectory.value / "VAADIN"
 
 
 3. To hook up Vaadin to Play's request handling mechanism, create a `Global` object in the default package and let it extend `VaadinSupport` (`app/Global.scala`):
@@ -89,10 +89,10 @@ Scaladin is a wrapper library that provides a pure Scala API for Vaadin.
          resolvers += "Scaladin & play-vaadin-integration Snapshots" at "http://henrikerola.github.io/repository/snapshots/",
 
          libraryDependencies ++= Seq(
-           "com.vaadin" % "vaadin-server" % "7.1.6",
-           "com.vaadin" % "vaadin-client-compiled" % "7.1.6",
-           "com.vaadin" % "vaadin-themes" % "7.1.6",
-           "vaadin.scala" %% "scaladin" % "3.0-SNAPSHOT",
+           "com.vaadin" % "vaadin-server" % "7.3.7",
+           "com.vaadin" % "vaadin-client-compiled" % "7.3.7",
+           "com.vaadin" % "vaadin-themes" % "7.3.7",
+           "vaadin.scala" %% "scaladin" % "3.1-SNAPSHOT",
            "org.vaadin.playintegration" %% "play-vaadin-integration" % "0.1-SNAPSHOT",
 
            jdbc,
@@ -100,9 +100,9 @@ Scaladin is a wrapper library that provides a pure Scala API for Vaadin.
            cache
          )
 
-         play.Project.playScalaSettings
+         lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-         playAssetsDirectories <+= baseDirectory / "VAADIN"
+         unmanagedResourceDirectories in Assets += baseDirectory.value / "VAADIN"
 
 
 3. To hook up Vaadin to Play's request handling mechanism, create a `Global` object in the default package and let it extend `VaadinSupport` (`app/Global.scala`):
