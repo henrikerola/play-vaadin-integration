@@ -21,22 +21,21 @@ class VaadinPlayRequest(
   session: VaadinPlaySession)
     extends VaadinRequest {
 
-  private lazy val textInputStreamOption = request.body.asText map { a => new ByteArrayInputStream(a.getBytes) }
-  private lazy val fileInputStreamOption = request.body.asMultipartFormData map { d =>
-    d.files.headOption.map { a =>
+  private[this] lazy val inputStream: InputStream = request.body match {
+    case AnyContentAsText(txt) => new ByteArrayInputStream(txt.getBytes)
+    case AnyContentAsJson(json) => new ByteArrayInputStream(json.toString().getBytes)
+    case AnyContentAsMultipartFormData(mdf) => mdf.files.headOption.map { a =>
       // FIXME: this is far from an optimal solution
       val file = File.createTempFile(UUID.randomUUID.toString, ".tmp")
-      a.ref.moveTo(file, true)
+      a.ref.moveTo(file, replace = true)
       new FileInputStream(file)
     }.orNull
+    case _ => null
   }
 
-  private[this] lazy val inputStream: InputStream = textInputStreamOption getOrElse fileInputStreamOption.orNull
-
-  override def getParameter(parameter: String): String = request.queryString.get(parameter) match {
-    case Some(values) => values(0)
-    case None => null
-  }
+  override def getParameter(parameter: String): String = request.queryString.get(parameter).fold {
+    request.body.asFormUrlEncoded.flatMap(_.get(parameter).flatMap(_.headOption))
+  }(_.headOption).orNull
 
   override def getParameterMap: java.util.Map[String, Array[String]] =
     request.queryString.map(a => (a._1, a._2.toArray)).asJava
